@@ -1,6 +1,6 @@
 Approach:
 ----
-use MVC 
+Seperation of concerns 
  - Robot and grid displays handled by the controller
  - data stored separately
  - view rendered separately
@@ -14,10 +14,11 @@ notes
     - final positions by ungrayed imaged
 
 Potential improvements
-    structure 
+
+    -structure 
         - minified code 
         - smaller libraries
-    potenetial code improvements
+    -potenetial code improvements
         - missing validation for commands parse via text box
         - regex to  validate input format
         - animation to show robot movement
