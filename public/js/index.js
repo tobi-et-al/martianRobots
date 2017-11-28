@@ -19,15 +19,17 @@ $(function() {
         init: function() {
             view.init();
             data.init();
-            controller.buildGrid("6 4");
+            data.gridStart = { x: 0, y: 0 };
+            controller.buildGrid("5 3");
             view.render("grid");
-            view.event()
+            view.event();
+
         },
         buildGrid: function(coord) {
 
             //upper right coordinate
             URCoord = coord.split(" ");
-            var gridStart = { x: 0, y: 0 };
+            var gridStart = data.gridStart;
             var gridEnd = { x: URCoord[1], y: URCoord[0] };
 
             var gridReady = [{}];
@@ -37,7 +39,10 @@ $(function() {
                     gridReady[yCord][xCord] = ({ y: yCord, x: xCord });
                 });
             });
-
+            data.gridEnd = {
+                x: _.max(Object.keys(gridReady[0]), function(o) { return obj[o]; }),
+                y: _.max(Object.keys(gridReady), function(o) { return obj[o]; })
+            };
             gridReady.sort();
             data.grid = gridReady;
         },
@@ -108,7 +113,7 @@ $(function() {
 
                     // if F, instruction is to move forward in one direction
                     if (instruction[instructionCount] == "F") {
-                        console.log("Moving...")
+                        //console.log("Moving...")
 
                         switch (robot.position.direction) {
                             case "N":
@@ -132,15 +137,23 @@ $(function() {
                     console.log(data.inst[i]);
                     console.log("New Direction: ", robot.position.direction)
                     console.log("New Position: ", "y: ", robot.position.y, "x: ", robot.position.x)
-                        //set new direction
+                    
+                    //set new direction
                     direction = robot.position.direction;
-                    console.log("--------");
+                    //console.log("--------");
                     instructionCount++
                 };
-
-                data.output.push(robot.position.x.toString().toUpperCase() +
+                var output = "";
+                output = (robot.position.x.toString().toUpperCase() +
                     " " + robot.position.y.toString().toUpperCase() +
-                    " " + robot.position.direction.toUpperCase() + "<br><hr>");
+                    " " + robot.position.direction.toUpperCase() + "<br>");
+                    
+                if (robot.position.x > parseInt(data.gridEnd.x) || robot.position.x < parseInt(data.gridStart.x)
+                    || robot.position.y > parseInt(data.gridEnd.y) || robot.position.y < parseInt(data.gridStart.y)) {
+                    output = output.concat(" LOST");
+                }
+
+                data.output.push(output + "<hr>");
 
                 var uid = robot.position.y.toString() + '-' + robot.position.x.toString();
                 // mark final position

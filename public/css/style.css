@@ -105,12 +105,12 @@ footer>a {
 }
 
 .grid {
-    width: 75px;
+    width: 100px;
     float: left;
     padding: 0px 0px 0px 0px;
     border: 1px dashed lightgrey;
     cursor: pointer;
-    height: 75px;
+    height: 100px;
 }
 
 .message {
