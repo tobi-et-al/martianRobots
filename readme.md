@@ -1,6 +1,6 @@
 Approach:
 ----
-use MVC 
+Seperation of concerns 
  - Robot and grid displays handled by the controller
  - data stored separately
  - view rendered separately
