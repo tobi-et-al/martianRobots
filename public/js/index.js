@@ -5,6 +5,7 @@ $(function() {
         init: function() {
             this.grid = [];
             this.instruction = "";
+            this.output = [];
         },
         grid: [],
         instruction: "",
@@ -49,7 +50,7 @@ $(function() {
                         '</div>');
                 });
 
-                html = html.concat(row);
+                html = html.concat(row.reverse());
 
             });
 
@@ -82,30 +83,35 @@ $(function() {
                 // mark position
                 $("#" + uid + " .robot").html("<img src='public/img/robot.png'/>");
 
+                //log output
+                data.output.push(" Robo " + i + "<br>");
+
                 var instruction = robot.instruction.split("");
                 var direction = robot.position.direction;
                 var instructionCount = 0;
                 while (instructionCount < instruction.length) {
 
-                    var lastPosition = direction;
-                    robot.position.direction = controller.getFinalPosition(direction, instruction[instructionCount]);
-                    console.log(lastPosition)
+                    var lastDirection = direction;
+                    var newDirection = controller.getFinalPosition(direction, instruction[instructionCount]);
+                    if (newDirection != "F") {
+                        robot.position.direction = newDirection;
+                    }
+                    console.log("Last Direction: ", lastDirection)
+                    console.log("Last Position: ", "x: ", robot.position.x, "y: ", robot.position.y)
 
-                    // if instruction is to move forward in one direction
-                    if (robot.position.direction == "F") {
-                        switch (lastPosition) {
+                    // if F, instruction is to move forward in one direction
+                    if (instruction[instructionCount] == "F") {
+                        console.log("Moving...")
+
+                        switch (robot.position.direction) {
                             case "N":
                                 robot.position.y++;
-                                console.log(robot.position.y, robot.position.y++);
                                 break;
                             case "S":
                                 robot.position.y--;
-                                console.log(robot.position.y, robot.position.y++);
-
                                 break;
                             case "E":
                                 robot.position.x++;
-                                console.log(robot.position.x++);
                                 break;
                             case "W":
                                 robot.position.x--;
@@ -114,16 +120,20 @@ $(function() {
                                 break;
                         }
                     }
-                    direction = robot.position.direction;
-
                     //update robot positions
-                    console.log(data.inst[i]);
-                    console.log(robot);
                     data.inst[i] = robot;
                     console.log(data.inst[i]);
-
+                    console.log("New Direction: ", robot.position.direction)
+                    console.log("New Position: ", "y: ", robot.position.y, "x: ", robot.position.x)
+                        //set new direction
+                    direction = robot.position.direction;
+                    console.log("--------");
                     instructionCount++
                 };
+                console.log()
+                data.output.push(robot.position.x.toString().toUpperCase() +
+                    " " + robot.position.y.toString().toUpperCase() +
+                    " " + robot.position.direction.toUpperCase() + "<br><hr>");
 
             });
         },
@@ -169,7 +179,6 @@ $(function() {
                         case "L":
                             return "W";
                             break;
-
                         default:
                             break;
                     }
@@ -178,12 +187,11 @@ $(function() {
                 case "S":
                     switch (instruction) {
                         case "R":
-                            return "E";
-                            break;
-                        case "L":
                             return "W";
                             break;
-
+                        case "L":
+                            return "E";
+                            break;
                         default:
                             break;
                     }
@@ -202,6 +210,7 @@ $(function() {
     var view = {
         init: function() {
             this.DisplayView = $("#screen");
+            this.output = $("#output");
         },
         render: function(entity) {
             var content = ""
@@ -209,20 +218,20 @@ $(function() {
                 case "grid":
                     content = controller.gridView()
                     break;
-
                 default:
                     break;
             }
             if (content != "") {
                 this.DisplayView.html('<div class="board">' + content + '</div>');
+
             }
         },
         event: function() {
-
             $('#command').submit(function(e) {
                 e.preventDefault();
                 data.instruction = $("#" + e.target.id).find("textarea").val();
                 controller.parseInst();
+                view.output.html(data.output);
             })
         }
     };
