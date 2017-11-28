@@ -14,10 +14,11 @@ notes
     - final positions by ungrayed imaged
 
 Potential improvements
-    structure 
+
+    -structure 
         - minified code 
         - smaller libraries
-    potenetial code improvements
+    -potenetial code improvements
         - missing validation for commands parse via text box
         - regex to  validate input format
         - animation to show robot movement
