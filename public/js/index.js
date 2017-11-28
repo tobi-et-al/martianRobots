@@ -16,6 +16,13 @@ $(function() {
 
     // robot functionalities
     var controller = {
+        init: function() {
+            view.init();
+            data.init();
+            controller.buildGrid("6 4");
+            view.render("grid");
+            view.event()
+        },
         buildGrid: function(coord) {
 
             //upper right coordinate
@@ -81,7 +88,7 @@ $(function() {
                 //
 
                 // mark position
-                $("#" + uid + " .robot").html("<img src='public/img/robot.png'/>");
+                $("#" + uid + " .robot").html("<img src='public/img/robotgray.png'/>");
 
                 //log output
                 data.output.push(" Robo " + i + "<br>");
@@ -130,10 +137,14 @@ $(function() {
                     console.log("--------");
                     instructionCount++
                 };
-                console.log()
+
                 data.output.push(robot.position.x.toString().toUpperCase() +
                     " " + robot.position.y.toString().toUpperCase() +
                     " " + robot.position.direction.toUpperCase() + "<br><hr>");
+
+                var uid = robot.position.y.toString() + '-' + robot.position.x.toString();
+                // mark final position
+                $("#" + uid + " .robot").html("<img src='public/img/robot.png'/>");
 
             });
         },
@@ -236,10 +247,5 @@ $(function() {
         }
     };
 
-    view.init();
-    data.init();
-    controller.buildGrid("6 4");
-    view.render("grid");
-    view.event()
-
+    controller.init()
 });
