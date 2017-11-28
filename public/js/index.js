@@ -83,6 +83,7 @@ $(function() {
                     instruction: y[1]
                 }
             });
+            data.output = [];
 
             this.ProcessingInstruction();
         },
@@ -137,7 +138,7 @@ $(function() {
                     console.log(data.inst[i]);
                     console.log("New Direction: ", robot.position.direction)
                     console.log("New Position: ", "y: ", robot.position.y, "x: ", robot.position.x)
-                    
+
                     //set new direction
                     direction = robot.position.direction;
                     //console.log("--------");
@@ -147,9 +148,9 @@ $(function() {
                 output = (robot.position.x.toString().toUpperCase() +
                     " " + robot.position.y.toString().toUpperCase() +
                     " " + robot.position.direction.toUpperCase() + "<br>");
-                    
-                if (robot.position.x > parseInt(data.gridEnd.x) || robot.position.x < parseInt(data.gridStart.x)
-                    || robot.position.y > parseInt(data.gridEnd.y) || robot.position.y < parseInt(data.gridStart.y)) {
+
+                if (robot.position.x > parseInt(data.gridEnd.x) || robot.position.x < parseInt(data.gridStart.x) ||
+                    robot.position.y > parseInt(data.gridEnd.y) || robot.position.y < parseInt(data.gridStart.y)) {
                     output = output.concat(" LOST");
                 }
 
